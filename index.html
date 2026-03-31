@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tendem — Pricing v2</title>
+<title>Tendem — Pricing</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f7f5; color: #1a1a1a; }
@@ -23,7 +23,7 @@
   .pill .dot.blue { background: #0969da; }
 
   /* Cards */
-  .plans { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: start; margin-bottom: 48px; }
+  .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: start; margin-bottom: 48px; }
 
   .card { background: white; border-radius: 18px; border: 1.5px solid #e8e8e8; overflow: hidden; position: relative; transition: box-shadow .2s, transform .15s; }
   .card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.08); transform: translateY(-2px); }
@@ -47,41 +47,9 @@
   .price-amount { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
   .price-amount .cur { font-size: 16px; font-weight: 600; color: #888; vertical-align: top; padding-top: 5px; display: inline-block; }
   .price-amount .per { font-size: 13px; font-weight: 500; color: #aaa; }
-
-  /* Credit widget */
-  .credit-widget { background: #f7f7f5; border-radius: 12px; padding: 14px; margin: 16px 0; }
-  .credit-widget-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #bbb; margin-bottom: 10px; }
-
-  .credit-flow { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-  .credit-pay { background: white; border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 7px 10px; text-align: center; flex: 1; }
-  .credit-pay .label { font-size: 10px; color: #bbb; }
-  .credit-pay .val { font-size: 14px; font-weight: 700; }
-  .credit-arrow { font-size: 16px; color: #ccc; flex-shrink: 0; }
-  .credit-get { border-radius: 8px; padding: 7px 10px; text-align: center; flex: 1; }
-  .credit-get .label { font-size: 10px; }
-  .credit-get .val { font-size: 14px; font-weight: 800; }
-
-  .credit-get.green { background: #e8f5e8; }
-  .credit-get.green .label { color: #5a9a5a; }
-  .credit-get.green .val { color: #2d8a2d; }
-  .credit-get.dark { background: #1a1a1a; }
-  .credit-get.dark .label { color: #888; }
-  .credit-get.dark .val { color: white; }
-  .credit-get.gold { background: #1a1a1a; }
-  .credit-get.gold .label { color: #888; }
-  .credit-get.gold .val { color: #f5c542; }
-  .credit-get.neutral { background: #f0f0ee; }
-  .credit-get.neutral .label { color: #999; }
-  .credit-get.neutral .val { color: #555; }
-
-  .credit-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; display: inline-block; }
-  .credit-badge.x2 { background: #e8f5e8; color: #2d8a2d; }
-  .credit-badge.x3 { background: #1a1a1a; color: #f5c542; }
-  .credit-badge.discount { background: #fff0f0; color: #c0392b; }
-  .credit-badge.onetime { background: #f0f0ee; color: #888; }
-
-  .discount-note { font-size: 11px; color: #c0392b; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
-  .discount-extra { font-size: 11px; color: #f5c542; font-weight: 600; margin-top: 4px; }
+  .price-contact { font-size: 22px; font-weight: 800; letter-spacing: -.3px; line-height: 1.2; }
+  .price-note { font-size: 12px; color: #666; font-weight: 600; margin-top: 10px; line-height: 1.4; }
+  .card-blurb { font-size: 12px; color: #777; line-height: 1.45; margin: 14px 0 4px; }
 
   /* CTA */
   .cta { display: block; width: 100%; padding: 11px; border-radius: 10px; font-size: 13px; font-weight: 700; text-align: center; cursor: pointer; border: none; margin-top: 16px; margin-bottom: 14px; transition: opacity .15s; letter-spacing: .1px; }
@@ -131,14 +99,22 @@
   .vt-row span { font-size: 13px; }
   .vt-row .plan-name { font-weight: 700; }
   .vt-row .value-num { font-weight: 700; color: #2d8a2d; }
-  .vt-row .value-num.gold { color: #c8960a; }
   .vt-row .mechanic { font-size: 12px; color: #888; }
   .badge-small { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px; margin-left: 4px; }
   .badge-2x { background: #e8f5e8; color: #2d8a2d; }
-  .badge-3x { background: #1a1a1a; color: #f5c542; }
-  .badge-50 { background: #fff0f0; color: #c0392b; }
 
   .footnote { text-align: center; font-size: 12px; color: #bbb; line-height: 1.7; margin-top: 48px; }
+
+  @media (max-width: 980px) {
+    .plans { grid-template-columns: repeat(2, 1fr); }
+    .task-grid { grid-template-columns: repeat(2, 1fr); }
+    .vt-row { grid-template-columns: 1.3fr 1fr 1fr; }
+    .vt-row .mechanic, .vt-row .value-num { display: none; }
+  }
+  @media (max-width: 560px) {
+    .plans { grid-template-columns: 1fr; }
+    .task-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -151,7 +127,7 @@
   </div>
 
   <div class="model-pill">
-    <div class="pill"><span class="dot"></span> Fixed price per task type</div>
+    <div class="pill"><span class="dot"></span> Fixed price shown before you submit</div>
     <div class="pill"><span class="dot green"></span> Higher tier = more value per dollar</div>
     <div class="pill"><span class="dot blue"></span> Credits expire monthly · no rollover</div>
   </div>
@@ -168,28 +144,12 @@
 
         <div class="price-sub-label">You pay</div>
         <div class="price-amount"><span class="cur">$</span>0</div>
-
-        <div class="credit-widget">
-          <div class="credit-widget-title">What lands on your account</div>
-          <div class="credit-flow">
-            <div class="credit-pay">
-              <div class="label">one-time gift</div>
-              <div class="val">$20</div>
-            </div>
-            <div class="credit-arrow">→</div>
-            <div class="credit-get neutral">
-              <div class="label">account balance</div>
-              <div class="val">$20</div>
-            </div>
-          </div>
-          <span class="credit-badge onetime">One-time · no renewal</span>
-        </div>
+        <div class="price-note">One-time welcome · no renewal</div>
 
         <button class="cta cta-ghost">Try for free</button>
         <hr class="div">
         <ul class="feat-list">
-          <li>$20 to spend on any task</li>
-          <li>X tokens (AI + Human)</li>
+          <li>X stofins for AI + human — $20 one-time to spend</li>
           <li class="muted">No monthly refresh</li>
           <li class="muted">No discount on tasks</li>
           <li class="muted">Standard queue</li>
@@ -197,76 +157,22 @@
       </div>
     </div>
 
-    <!-- BASIC -->
-    <div class="card">
-      <div class="card-badge badge-basic">Basic</div>
-      <div class="card-body">
-        <div class="card-name">Basic</div>
-        <div class="card-tagline">Occasional use</div>
-
-        <div class="price-sub-label">Subscription</div>
-        <div class="price-amount"><span class="cur">$</span>20<span class="per"> / mo</span></div>
-
-        <div class="credit-widget">
-          <div class="credit-widget-title">What lands on your account</div>
-          <div class="credit-flow">
-            <div class="credit-pay">
-              <div class="label">you pay</div>
-              <div class="val">$20</div>
-            </div>
-            <div class="credit-arrow">→</div>
-            <div class="credit-get green">
-              <div class="label">account balance</div>
-              <div class="val">$40</div>
-            </div>
-          </div>
-          <div class="discount-note" style="color:#0969da;">Save $20 on credits · 10% off every task</div>
-        </div>
-
-        <button class="cta cta-outline">Start Basic</button>
-        <hr class="div">
-        <ul class="feat-list">
-          <li>$40 / mo to spend</li>
-          <li>X tokens (AI + Human)</li>
-          <li>10% off all tasks</li>
-          <li>Monthly balance refresh</li>
-          <li class="muted">Standard queue</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- STARTER -->
+    <!-- STARTER (merged Basic + Starter) -->
     <div class="card">
       <div class="card-badge badge-starter">Starter</div>
       <div class="card-body">
         <div class="card-name">Starter</div>
-        <div class="card-tagline">Regular users</div>
+        <div class="card-tagline">Individuals &amp; regular use</div>
 
         <div class="price-sub-label">Subscription</div>
-        <div class="price-amount"><span class="cur">$</span>100<span class="per"> / mo</span></div>
-
-        <div class="credit-widget">
-          <div class="credit-widget-title">What lands on your account</div>
-          <div class="credit-flow">
-            <div class="credit-pay">
-              <div class="label">you pay</div>
-              <div class="val">$100</div>
-            </div>
-            <div class="credit-arrow">→</div>
-            <div class="credit-get green">
-              <div class="label">account balance</div>
-              <div class="val">$200</div>
-            </div>
-          </div>
-          <div class="discount-note" style="color:#2d8a2d;">Save $100 on credits · 20% off every task</div>
-        </div>
+        <div class="price-amount"><span class="cur">$</span>70<span class="per"> / mo</span></div>
+        <div class="price-note" style="color:#2d8a2d;">Save $70 on credits · 10% off every task</div>
 
         <button class="cta cta-outline">Start Starter</button>
         <hr class="div">
         <ul class="feat-list">
-          <li>$200 / mo to spend</li>
-          <li>X tokens (AI + Human)</li>
-          <li>20% off all tasks</li>
+          <li>X stofins for AI + human — $140/month to spend</li>
+          <li>10% off all tasks</li>
           <li>Monthly balance refresh</li>
           <li>Priority support</li>
         </ul>
@@ -282,28 +188,12 @@
 
         <div class="price-sub-label">Subscription</div>
         <div class="price-amount"><span class="cur">$</span>500<span class="per"> / mo</span></div>
-
-        <div class="credit-widget" style="background:#f0f0ee;">
-          <div class="credit-widget-title">What lands on your account</div>
-          <div class="credit-flow">
-            <div class="credit-pay">
-              <div class="label">you pay</div>
-              <div class="val">$500</div>
-            </div>
-            <div class="credit-arrow">→</div>
-            <div class="credit-get dark">
-              <div class="label">account balance</div>
-              <div class="val">$1,000</div>
-            </div>
-          </div>
-          <div class="discount-note">Save $500 on credits · 20% off every task</div>
-        </div>
+        <div class="price-note" style="color:#555;">Save $500 on credits · 20% off every task</div>
 
         <button class="cta cta-dark">Start Pro</button>
         <hr class="div">
         <ul class="feat-list">
-          <li>$1,000 / mo to spend</li>
-          <li>X tokens (AI + Human)</li>
+          <li>X stofins for AI + human — $1,000/month to spend</li>
           <li>20% off all tasks</li>
           <li>Priority queue (8 hrs)</li>
           <li>AI ↔ human interaction trace</li>
@@ -317,33 +207,15 @@
       <div class="card-badge badge-business">Business</div>
       <div class="card-body">
         <div class="card-name">Business</div>
-        <div class="card-tagline">Teams & agencies</div>
+        <div class="card-tagline">Teams &amp; agencies</div>
 
-        <div class="price-sub-label">Subscription</div>
-        <div class="price-amount"><span class="cur">$</span>1000<span class="per"> / mo</span></div>
+        <div class="price-sub-label">Custom</div>
+        <div class="price-contact">Contact us</div>
+        <div class="card-blurb">Interested in Business? Reach out — we’ll tailor volume, SLAs, and support for your team.</div>
 
-        <div class="credit-widget" style="background:#111;border-radius:12px;">
-          <div class="credit-widget-title" style="color:#555;">What lands on your account</div>
-          <div class="credit-flow">
-            <div class="credit-pay" style="background:#222;border-color:#333;color:white;">
-              <div class="label" style="color:#666;">you pay</div>
-              <div class="val" style="color:white;">$1,000</div>
-            </div>
-            <div class="credit-arrow" style="color:#444;">→</div>
-            <div class="credit-get gold">
-              <div class="label">account balance</div>
-              <div class="val">$3,000</div>
-            </div>
-          </div>
-          <div class="discount-note" style="color:#f5c542;">Save $2,000 on credits · 20% off every task</div>
-        </div>
-
-        <button class="cta cta-gold">Start Business</button>
+        <button class="cta cta-gold">Talk to us</button>
         <hr class="div">
         <ul class="feat-list">
-          <li>$3,000 / mo to spend</li>
-          <li>X tokens (AI + Human)</li>
-          <li>20% off all tasks</li>
           <li>Priority queue (8 hrs)</li>
           <li>AI ↔ human interaction trace</li>
           <li class="star">Phone support (calls)</li>
@@ -376,18 +248,11 @@
       <span class="value-num">$20 total</span>
     </div>
     <div class="vt-row highlight">
-      <span class="plan-name">Basic</span>
-      <span>$20 / mo</span>
-      <span>$40 / mo</span>
-      <span class="mechanic">2× credits + 10% off tasks <span class="badge-small badge-2x">2×</span></span>
-      <span class="value-num">~$44 / mo</span>
-    </div>
-    <div class="vt-row highlight">
       <span class="plan-name">Starter</span>
-      <span>$100 / mo</span>
-      <span>$200 / mo</span>
-      <span class="mechanic">2× credits + 20% off tasks <span class="badge-small badge-2x">2×</span></span>
-      <span class="value-num">~$250 / mo</span>
+      <span>$70 / mo</span>
+      <span>$140 / mo</span>
+      <span class="mechanic">2× credits + 10% off tasks <span class="badge-small badge-2x">2×</span></span>
+      <span class="value-num">~$155 / mo</span>
     </div>
     <div class="vt-row highlight-pro">
       <span class="plan-name">Pro</span>
@@ -398,10 +263,10 @@
     </div>
     <div class="vt-row">
       <span class="plan-name">Business</span>
-      <span>$1,000 / mo</span>
-      <span>$3,000 / mo</span>
-      <span class="mechanic">3× credits + 20% off tasks <span class="badge-small badge-3x">3×</span></span>
-      <span class="value-num gold">~$3,600 / mo</span>
+      <span>—</span>
+      <span>—</span>
+      <span class="mechanic">Custom · contact us for terms</span>
+      <span class="mechanic">—</span>
     </div>
   </div>
 
@@ -428,7 +293,6 @@
     </div>
   </div>
 
-
   <!-- TASK PRICES PLACEHOLDER -->
   <div class="section-title">Task prices</div>
   <div class="section-sub">Fixed price per task type — shown before you confirm. Discount applied automatically based on your plan.</div>
@@ -443,7 +307,7 @@
     </div>
     <div class="task-card">
       <div class="task-card-icon">📊</div>
-      <div class="task-card-name">Analysis & reports</div>
+      <div class="task-card-name">Analysis &amp; reports</div>
       <div class="task-card-desc">Competitive analysis, market briefs, structured data insights</div>
       <div class="task-card-price"><span class="tbd">from $TBD</span></div>
       <div class="task-card-note">per task · prices TBD</div>
@@ -465,8 +329,7 @@
   </div>
 
   <div class="footnote">
-    Tendem / CompetitorIntel / pricing_visual_v2 · March 2026<br>
-    Internal document — for team, product, and marketing discussion<br>
+    Tendem pricing preview · March 2026<br>
     Task prices TBD · Credit expiry: end of billing cycle · No rollover
   </div>
 
