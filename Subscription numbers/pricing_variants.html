@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tendem — Pricing Variants Analysis</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f3ee; color: #1a1a1a; padding: 24px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 28px; margin-bottom: 8px; }
+  .header p { color: #666; font-size: 14px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid #e0ddd5; }
+  .tab { padding: 12px 28px; cursor: pointer; font-size: 14px; font-weight: 600; color: #888; border: 2px solid transparent; border-bottom: none; border-radius: 8px 8px 0 0; background: transparent; transition: all 0.2s; }
+  .tab:hover { color: #333; background: #eae7df; }
+  .tab.active { color: #1a1a1a; background: #fff; border-color: #e0ddd5; margin-bottom: -2px; border-bottom: 2px solid #fff; }
+
+  .tab-content { display: none; background: #fff; border: 2px solid #e0ddd5; border-top: none; border-radius: 0 0 12px 12px; padding: 24px; }
+  .tab-content.active { display: block; }
+
+  /* Reference box */
+  .ref-box { background: #f9f8f5; border: 1px solid #e0ddd5; border-radius: 8px; padding: 16px; margin-bottom: 20px; font-size: 13px; color: #555; }
+  .ref-box strong { color: #333; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #f5f3ee; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 12px; text-align: right; border-bottom: 2px solid #e0ddd5; position: sticky; top: 0; }
+  thead th:first-child { text-align: center; }
+  thead th:nth-child(2), thead th:nth-child(3) { text-align: center; }
+
+  tbody td { padding: 8px 12px; border-bottom: 1px solid #f0ede6; text-align: right; font-variant-numeric: tabular-nums; }
+  tbody td:first-child { text-align: center; color: #999; font-size: 12px; }
+
+  tbody tr:hover { background: #fdfcf9; }
+  tbody tr.positive { background: #f0faf0; }
+  tbody tr.positive:hover { background: #e5f5e5; }
+  tbody tr.best { background: #e8f5e8; font-weight: 600; }
+  tbody tr.best:hover { background: #dcf0dc; }
+
+  .margin-pos { color: #1a7a1a; font-weight: 600; }
+  .margin-neg { color: #c0392b; }
+  .margin-warn { color: #e67e22; }
+
+  .check { color: #27ae60; font-weight: bold; }
+
+  /* Group separators */
+  tbody tr.group-start td { border-top: 2px solid #e0ddd5; }
+
+  /* Legend */
+  .legend { margin-top: 16px; font-size: 12px; color: #888; display: flex; gap: 24px; flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend .swatch { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .legend .swatch.green { background: #e8f5e8; border: 1px solid #a5d6a5; }
+  .legend .swatch.light { background: #f0faf0; border: 1px solid #c8e6c8; }
+
+  /* Section label */
+  .section-label { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    body { padding: 12px; }
+    table { font-size: 11px; }
+    thead th, tbody td { padding: 6px 8px; }
+    .tab { padding: 10px 16px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Tendem — Pricing Variants</h1>
+  <p>Subscription model analysis · FP margin 27.5% · Data: March 2026</p>
+</div>
+
+<div class="ref-box">
+  <strong>Reference costs (from real data):</strong>
+  AI task cost: median $0.38, P80 $0.96 · HITL task cost: median $20.91, P80 $74.05<br>
+  Tuned FP (27.5% margin): AI median $0.53, P80 $1.32 · HITL median $28.84, P80 $102.13<br>
+  <strong>Margin formula:</strong> margin = 1 − multiplier × (1 − fp_margin) / (1 − discount). Margin does NOT depend on task complexity — only on multiplier &amp; discount.<br><br>
+  <strong>Effective value</strong> — purchasing power of the subscription: balance / (1 − discount). Shows how much a user would need to spend at full price (no subscription) to get the same number of tasks. E.g. Starter $100, 1.2×, 10% off → balance $120, but each task is 10% cheaper, so $120 stretches like $133 at full price.<br>
+  <strong>Overage margin</strong> — our margin on tasks purchased after the balance is used up. User pays discounted FP (= FP × (1 − discount)), our cost = FP × (1 − fp_margin). Formula: 1 − (1 − fp_margin) / (1 − discount). This is always positive as long as discount &lt; fp_margin (27.5%).
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">Starter $100</div>
+  <div class="tab" onclick="switchTab(1)">Pro $500</div>
+  <div class="tab" onclick="switchTab(2)">Pro $700</div>
+</div>
+
+<!-- TAB 0: Starter $100 -->
+<div class="tab-content active" id="tab-0">
+  <div class="section-label">Starter — $100 / mo</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Mult.</th><th>Discount</th><th>Balance</th><th>Eff. value</th>
+        <th>Margin 100%</th><th>Margin 80%</th><th>Overage</th>
+        <th>AI (med)</th><th>AI (P80)</th><th>HITL (med)</th><th>HITL (P80)</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="tbody-starter100"></tbody>
+  </table>
+  <div class="legend">
+    <span><span class="swatch green"></span> Best pick (profitable + good value)</span>
+    <span><span class="swatch light"></span> Profitable at 100% utilization</span>
+  </div>
+</div>
+
+<!-- TAB 1: Pro $500 -->
+<div class="tab-content" id="tab-1">
+  <div class="section-label">Pro — $500 / mo</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Mult.</th><th>Discount</th><th>Balance</th><th>Eff. value</th>
+        <th>Margin 100%</th><th>Margin 80%</th><th>Overage</th>
+        <th>AI (med)</th><th>AI (P80)</th><th>HITL (med)</th><th>HITL (P80)</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="tbody-pro500"></tbody>
+  </table>
+  <div class="legend">
+    <span><span class="swatch green"></span> Best pick</span>
+    <span><span class="swatch light"></span> Profitable at 100%</span>
+  </div>
+</div>
+
+<!-- TAB 2: Pro $700 -->
+<div class="tab-content" id="tab-2">
+  <div class="section-label">Pro — $700 / mo</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Mult.</th><th>Discount</th><th>Balance</th><th>Eff. value</th>
+        <th>Margin 100%</th><th>Margin 80%</th><th>Overage</th>
+        <th>AI (med)</th><th>AI (P80)</th><th>HITL (med)</th><th>HITL (P80)</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="tbody-pro700"></tbody>
+  </table>
+  <div class="legend">
+    <span><span class="swatch green"></span> Best pick</span>
+    <span><span class="swatch light"></span> Profitable at 100%</span>
+  </div>
+</div>
+
+<script>
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+}
+
+const fpMargin = 0.275;
+const aiMed = 0.38, aiP80 = 0.96;
+const hitlMed = 20.91, hitlP80 = 74.05;
+
+const aiFpMed = aiMed / (1 - fpMargin);
+const aiFpP80 = aiP80 / (1 - fpMargin);
+const hitlFpMed = hitlMed / (1 - fpMargin);
+const hitlFpP80 = hitlP80 / (1 - fpMargin);
+
+const variants = [
+  [1.0, 0.00], [1.0, 0.05], [1.0, 0.10],
+  [1.2, 0.00], [1.2, 0.05], [1.2, 0.10],
+  [1.3, 0.00], [1.3, 0.05], [1.3, 0.10], [1.3, 0.15],
+  [1.5, 0.00], [1.5, 0.05], [1.5, 0.10], [1.5, 0.15], [1.5, 0.20],
+  [2.0, 0.00], [2.0, 0.05], [2.0, 0.10], [2.0, 0.15], [2.0, 0.20],
+];
+
+// Best picks: good margin + meaningful multiplier
+const bestPicks = {
+  100: [[1.2, 0.00], [1.2, 0.05], [1.3, 0.00]],
+  500: [[1.2, 0.00], [1.2, 0.05], [1.3, 0.00]],
+  700: [[1.2, 0.00], [1.2, 0.05], [1.3, 0.00]],
+};
+
+function fmtMargin(v) {
+  const pct = (v * 100).toFixed(1) + '%';
+  if (v > 0.05) return `<span class="margin-pos">${pct}</span>`;
+  if (v > 0) return `<span class="margin-warn">${pct}</span>`;
+  return `<span class="margin-neg">${pct}</span>`;
+}
+
+function fmtNum(v, decimals) {
+  if (decimals === undefined) decimals = 0;
+  return v.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function buildTable(price, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  let lastMult = null;
+
+  variants.forEach(([mult, disc], idx) => {
+    const b = price * mult;
+    const eff = disc > 0 ? b / (1 - disc) : b;
+    const m100 = 1 - mult * (1 - fpMargin) / (1 - disc);
+    const m80 = 1 - 0.8 * mult * (1 - fpMargin) / (1 - disc);
+    const overage = 1 - (1 - fpMargin) / (1 - disc);
+
+    const aiDfpMed = aiFpMed * (1 - disc);
+    const aiDfpP80 = aiFpP80 * (1 - disc);
+    const hitlDfpMed = hitlFpMed * (1 - disc);
+    const hitlDfpP80 = hitlFpP80 * (1 - disc);
+
+    const nAiMed = b / aiDfpMed;
+    const nAiP80 = b / aiDfpP80;
+    const nHitlMed = b / hitlDfpMed;
+    const nHitlP80 = b / hitlDfpP80;
+
+    const isBest = bestPicks[price] && bestPicks[price].some(bp => bp[0] === mult && bp[1] === disc);
+    const isPositive = m100 > 0;
+
+    let rowClass = '';
+    if (isBest) rowClass = 'best';
+    else if (isPositive) rowClass = 'positive';
+    if (lastMult !== null && mult !== lastMult) rowClass += ' group-start';
+    lastMult = mult;
+
+    const tr = document.createElement('tr');
+    tr.className = rowClass;
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td>${mult.toFixed(1)}x</td>
+      <td>${(disc * 100).toFixed(0)}%</td>
+      <td>$${fmtNum(b)}</td>
+      <td>$${fmtNum(eff)}</td>
+      <td>${fmtMargin(m100)}</td>
+      <td>${fmtMargin(m80)}</td>
+      <td>${fmtMargin(overage)}</td>
+      <td>${fmtNum(nAiMed)}</td>
+      <td>${fmtNum(nAiP80)}</td>
+      <td>${nHitlMed.toFixed(1)}</td>
+      <td>${nHitlP80.toFixed(1)}</td>
+      <td>${isPositive ? '<span class="check">✓</span>' : ''}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+buildTable(100, 'tbody-starter100');
+buildTable(500, 'tbody-pro500');
+buildTable(700, 'tbody-pro700');
+</script>
+
+</body>
+</html>
