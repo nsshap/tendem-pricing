@@ -99,6 +99,29 @@
   .badge-small { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px; margin-left: 4px; }
   .badge-2x { background: #e8f5e8; color: #2d8a2d; }
 
+  /* ── FREE PLAN BANNER ── */
+  .free-banner { background: white; border: 1.5px solid #e8e8e8; border-radius: 14px; padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; }
+  .free-banner-icon { font-size: 20px; flex-shrink: 0; }
+  .free-banner-text { flex: 1; color: #555; line-height: 1.5; }
+  .free-banner-text strong { color: #1a1a1a; font-weight: 700; }
+  .free-banner-text .upgrade { color: #6c47ff; font-weight: 600; cursor: pointer; }
+  .free-banner-amount { background: #f0f0ee; border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 700; color: #555; flex-shrink: 0; }
+
+  /* ── CREDITS SELECTOR ── */
+  .credits-selector { position: relative; margin-bottom: 14px; }
+  .cs-trigger { width: 100%; background: white; border: 1.5px solid #e0e0e0; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: #1a1a1a; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: border-color .15s; font-family: inherit; }
+  .cs-trigger:hover { border-color: #bbb; }
+  .cs-trigger.open { border-color: #6c47ff; box-shadow: 0 0 0 3px rgba(108,71,255,.1); }
+  .cs-chevron { font-size: 11px; color: #aaa; transition: transform .15s; }
+  .cs-trigger.open .cs-chevron { transform: rotate(180deg); }
+  .cs-dropdown { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: white; border: 1.5px solid #e0e0e0; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,.12); z-index: 100; overflow: hidden; display: none; max-height: 280px; overflow-y: auto; }
+  .cs-dropdown.open { display: block; }
+  .cs-item { padding: 11px 14px; font-size: 13px; font-weight: 500; color: #1a1a1a; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background .1s; }
+  .cs-item:hover { background: #f5f5f3; }
+  .cs-item.selected { background: #6c47ff; color: white; font-weight: 600; }
+  .cs-item.selected .cs-check { opacity: 1; }
+  .cs-check { opacity: 0; font-size: 13px; }
+
   .footnote { text-align: center; font-size: 12px; color: #bbb; line-height: 1.7; margin-top: 48px; }
 
   @media (max-width: 860px) {
@@ -128,6 +151,16 @@
     <div class="pill"><span class="dot blue"></span> Credits expire monthly · no rollover</div>
   </div>
 
+  <!-- FREE PLAN BANNER -->
+  <div class="free-banner">
+    <div class="free-banner-icon">🎁</div>
+    <div class="free-banner-text">
+      <strong>You're on the Free plan</strong> — we gifted you <strong>$20</strong> on your account so you can try Tendem.
+      <span class="upgrade">Upgrade anytime.</span>
+    </div>
+    <div class="free-banner-amount">$20 remaining</div>
+  </div>
+
   <!-- PLAN CARDS -->
   <div class="plans">
 
@@ -138,7 +171,28 @@
         <div class="price-sub-label">For those who are just starting out</div>
         <div class="price-amount"><span class="cur">$</span>70<span class="per"> / mo</span></div>
 
-        <button class="cta cta-outline">Start Starter</button>
+        <button class="cta cta-outline">Start 14-day trial</button>
+
+        <div class="credits-selector" id="cs-starter">
+          <button class="cs-trigger" onclick="toggleCS('cs-starter')">
+            <span class="cs-label">100 credits / month</span>
+            <span class="cs-chevron">▼</span>
+          </button>
+          <div class="cs-dropdown">
+            <div class="cs-item selected" onclick="selectCS('cs-starter', this)">100 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">200 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">400 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">800 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">1200 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">2000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">3000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">4000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">5000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">7500 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-starter', this)">10000 credits / month<span class="cs-check">✓</span></div>
+          </div>
+        </div>
+
         <hr class="div">
         <div class="feat-list-wrap">
           <ul class="feat-list">
@@ -159,7 +213,28 @@
         <div class="price-sub-label">For regular users</div>
         <div class="price-amount"><span class="cur">$</span>500<span class="per"> / mo</span></div>
 
-        <button class="cta cta-dark">Start Pro</button>
+        <button class="cta cta-dark">Start 14-day trial</button>
+
+        <div class="credits-selector" id="cs-pro">
+          <button class="cs-trigger" onclick="toggleCS('cs-pro')">
+            <span class="cs-label">100 credits / month</span>
+            <span class="cs-chevron">▼</span>
+          </button>
+          <div class="cs-dropdown">
+            <div class="cs-item selected" onclick="selectCS('cs-pro', this)">100 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">200 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">400 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">800 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">1200 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">2000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">3000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">4000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">5000 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">7500 credits / month<span class="cs-check">✓</span></div>
+            <div class="cs-item" onclick="selectCS('cs-pro', this)">10000 credits / month<span class="cs-check">✓</span></div>
+          </div>
+        </div>
+
         <hr class="div">
         <div class="feat-list-wrap">
           <div class="feat-list-inherit">Everything in Starter, plus:</div>
@@ -295,5 +370,38 @@
   </div>
 
 </div>
+
+<script>
+  function toggleCS(id) {
+    const wrap = document.getElementById(id);
+    const trigger = wrap.querySelector('.cs-trigger');
+    const dropdown = wrap.querySelector('.cs-dropdown');
+    const isOpen = dropdown.classList.contains('open');
+    // close all first
+    document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
+    if (!isOpen) {
+      dropdown.classList.add('open');
+      trigger.classList.add('open');
+    }
+  }
+
+  function selectCS(id, el) {
+    const wrap = document.getElementById(id);
+    wrap.querySelectorAll('.cs-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    const label = el.textContent.replace('✓', '').trim();
+    wrap.querySelector('.cs-label').textContent = label;
+    wrap.querySelector('.cs-dropdown').classList.remove('open');
+    wrap.querySelector('.cs-trigger').classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.credits-selector')) {
+      document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
+    }
+  });
+</script>
 </body>
 </html>
