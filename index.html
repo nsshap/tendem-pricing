@@ -23,32 +23,23 @@
   .pill .dot.blue { background: #0969da; }
 
   /* Cards */
-  .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: stretch; margin-bottom: 48px; }
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: stretch; margin-bottom: 48px; }
 
   .card { background: white; border-radius: 18px; border: 1.5px solid #e8e8e8; overflow: hidden; position: relative; transition: box-shadow .2s, transform .15s; display: flex; flex-direction: column; }
   .card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.08); transform: translateY(-2px); }
   .card.pro { border-color: #1a1a1a; border-width: 2px; box-shadow: 0 8px 32px rgba(0,0,0,.12); }
 
-  .card-badge { text-align: center; padding: 7px 14px; font-size: 11px; font-weight: 600; letter-spacing: .2px; line-height: 1.5; display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .badge-plan { font-weight: 800; text-transform: uppercase; letter-spacing: .5px; }
-  .badge-slogan { font-weight: 500; opacity: .8; text-transform: none; letter-spacing: 0; }
-  .badge-rec { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); border-radius: 100px; padding: 1px 7px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #fff; }
-  .badge-free { background: #f5f5f3; color: #999; }
-  .badge-basic { background: #f0f7ff; color: #0969da; }
-  .badge-starter { background: #f0faf0; color: #2d8a2d; }
-  .badge-pro { background: #1a1a1a; color: white; }
-  .badge-business { background: #1a1a1a; color: #f5c542; }
+  .rec-badge { position: absolute; top: 14px; right: 14px; background: #1a1a1a; color: white; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
 
-  .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+  .card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
   .feat-list-wrap { flex: 1; }
   .feat-list-inherit { font-size: 11px; color: #aaa; font-style: italic; margin-bottom: 6px; padding-left: 1px; }
 
-  .card-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -.3px; }
-  .card-tagline { font-size: 12px; color: #aaa; margin-bottom: 18px; }
+  .card-name { font-size: 22px; font-weight: 800; margin-bottom: 2px; letter-spacing: -.4px; }
 
   /* Price */
   .price-row { margin-bottom: 6px; }
-  .price-sub-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: #bbb; margin-bottom: 4px; }
+  .price-sub-label { font-size: 12px; font-weight: 500; color: #aaa; margin-bottom: 12px; line-height: 1.4; }
   .price-amount { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
   .price-amount .cur { font-size: 16px; font-weight: 600; color: #888; vertical-align: top; padding-top: 5px; display: inline-block; }
   .price-amount .per { font-size: 13px; font-weight: 500; color: #aaa; }
@@ -110,7 +101,7 @@
 
   .footnote { text-align: center; font-size: 12px; color: #bbb; line-height: 1.7; margin-top: 48px; }
 
-  @media (max-width: 980px) {
+  @media (max-width: 860px) {
     .plans { grid-template-columns: repeat(2, 1fr); }
     .task-grid { grid-template-columns: repeat(2, 1fr); }
     .vt-row { grid-template-columns: 1.3fr 1fr 1fr; }
@@ -140,35 +131,11 @@
   <!-- PLAN CARDS -->
   <div class="plans">
 
-    <!-- FREE -->
+    <!-- STARTER -->
     <div class="card">
-      <div class="card-badge badge-free"><span class="badge-plan">Free</span> · <span class="badge-slogan">Start using, no strings attached</span></div>
-      <div class="card-body">
-        <div class="card-name">Free</div>
-
-        <div class="price-sub-label">You pay</div>
-        <div class="price-amount"><span class="cur">$</span>0</div>
-
-        <button class="cta cta-ghost">Try for free</button>
-        <hr class="div">
-        <div class="feat-list-wrap">
-          <ul class="feat-list">
-            <li>~up to 35 AI tasks or ~6 AI+Human tasks · one-time</li>
-            <li class="muted">No monthly refresh</li>
-            <li class="muted">No discount on tasks</li>
-            <li class="muted">Standard queue</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- STARTER (merged Basic + Starter) -->
-    <div class="card">
-      <div class="card-badge badge-starter"><span class="badge-plan">Starter</span> · <span class="badge-slogan">For those who are just starting out</span></div>
       <div class="card-body">
         <div class="card-name">Starter</div>
-
-        <div class="price-sub-label">Subscription</div>
+        <div class="price-sub-label">For those who are just starting out</div>
         <div class="price-amount"><span class="cur">$</span>70<span class="per"> / mo</span></div>
 
         <button class="cta cta-outline">Start Starter</button>
@@ -186,11 +153,10 @@
 
     <!-- PRO -->
     <div class="card pro">
-      <div class="card-badge badge-pro"><span class="badge-plan">★ Pro</span> · <span class="badge-slogan">For regular users</span> <span class="badge-rec">Recommended</span></div>
+      <span class="rec-badge">Recommended</span>
       <div class="card-body">
         <div class="card-name">Pro</div>
-
-        <div class="price-sub-label">Subscription</div>
+        <div class="price-sub-label">For regular users</div>
         <div class="price-amount"><span class="cur">$</span>500<span class="per"> / mo</span></div>
 
         <button class="cta cta-dark">Start Pro</button>
@@ -208,15 +174,12 @@
 
     <!-- BUSINESS -->
     <div class="card">
-      <div class="card-badge badge-business"><span class="badge-plan">Business</span> · <span class="badge-slogan">For maximum value</span></div>
       <div class="card-body">
         <div class="card-name">Business</div>
-
-        <div class="price-sub-label">Custom</div>
+        <div class="price-sub-label">For maximum value</div>
         <div class="price-contact">Platform fee</div>
-        <div class="card-blurb">Interested in Business? Reach out — we’ll tailor volume, SLAs, and support for your team.</div>
 
-        <button class="cta cta-gold">Talk to us</button>
+        <button class="cta cta-gold">Book a demo</button>
         <hr class="div">
         <div class="feat-list-wrap">
           <div class="feat-list-inherit">Everything in Pro, plus:</div>
@@ -244,13 +207,6 @@
       <span>Balance / mo</span>
       <span>Mechanic</span>
       <span>Effective value</span>
-    </div>
-    <div class="vt-row">
-      <span class="plan-name">Free</span>
-      <span>$0 (once)</span>
-      <span>$20 once</span>
-      <span class="mechanic">One-time gift · no discount</span>
-      <span class="value-num">$20 total</span>
     </div>
     <div class="vt-row highlight">
       <span class="plan-name">Starter</span>
