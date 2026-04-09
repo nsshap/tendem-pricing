@@ -155,8 +155,7 @@
   <div class="free-banner">
     <div class="free-banner-icon">🎁</div>
     <div class="free-banner-text">
-      <strong>You're on the Free plan</strong> — we gifted you <strong>$20</strong> on your account so you can try Tendem.
-      <span class="upgrade">Upgrade anytime.</span>
+      <strong>You're on the Free plan</strong> — we gifted you <strong>$20</strong> on your account so you can give it a spin and see the magic for yourself
     </div>
     <div class="free-banner-amount">$20 remaining</div>
   </div>
@@ -172,26 +171,6 @@
         <div class="price-amount"><span class="cur">$</span>70<span class="per"> / mo</span></div>
 
         <button class="cta cta-outline">Start 14-day trial</button>
-
-        <div class="credits-selector" id="cs-starter">
-          <button class="cs-trigger" onclick="toggleCS('cs-starter')">
-            <span class="cs-label">100 credits / month</span>
-            <span class="cs-chevron">▼</span>
-          </button>
-          <div class="cs-dropdown">
-            <div class="cs-item selected" onclick="selectCS('cs-starter', this)">100 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">200 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">400 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">800 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">1200 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">2000 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">3000 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">4000 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">5000 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">7500 credits / month<span class="cs-check">✓</span></div>
-            <div class="cs-item" onclick="selectCS('cs-starter', this)">10000 credits / month<span class="cs-check">✓</span></div>
-          </div>
-        </div>
 
         <hr class="div">
         <div class="feat-list-wrap">
@@ -211,7 +190,7 @@
       <div class="card-body">
         <div class="card-name">Pro</div>
         <div class="price-sub-label">For regular users</div>
-        <div class="price-amount"><span class="cur">$</span>500<span class="per"> / mo</span></div>
+        <div class="price-amount"><span class="cur">$</span><span id="pro-price">500</span><span class="per"> / mo</span></div>
 
         <button class="cta cta-dark">Start 14-day trial</button>
 
@@ -372,12 +351,14 @@
 </div>
 
 <script>
+  // Pro pricing: base $500, +$200 for each step in the list
+  const PRO_PRICES = [500, 700, 900, 1100, 1300, 1500, 1700, 1900, 2100, 2300, 2500];
+
   function toggleCS(id) {
     const wrap = document.getElementById(id);
     const trigger = wrap.querySelector('.cs-trigger');
     const dropdown = wrap.querySelector('.cs-dropdown');
     const isOpen = dropdown.classList.contains('open');
-    // close all first
     document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
     document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
     if (!isOpen) {
@@ -388,12 +369,20 @@
 
   function selectCS(id, el) {
     const wrap = document.getElementById(id);
-    wrap.querySelectorAll('.cs-item').forEach(i => i.classList.remove('selected'));
+    const items = Array.from(wrap.querySelectorAll('.cs-item'));
+    items.forEach(i => i.classList.remove('selected'));
     el.classList.add('selected');
     const label = el.textContent.replace('✓', '').trim();
     wrap.querySelector('.cs-label').textContent = label;
     wrap.querySelector('.cs-dropdown').classList.remove('open');
     wrap.querySelector('.cs-trigger').classList.remove('open');
+
+    // Update Pro price based on selected index
+    if (id === 'cs-pro') {
+      const idx = items.indexOf(el);
+      const price = PRO_PRICES[idx] ?? PRO_PRICES[PRO_PRICES.length - 1];
+      document.getElementById('pro-price').textContent = price.toLocaleString();
+    }
   }
 
   document.addEventListener('click', function(e) {
